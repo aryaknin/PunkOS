@@ -106,3 +106,8 @@ données importantes ni comme système de production. Durant son développement,
 il pourra planter, corrompre ses disques virtuels ou adopter des interfaces
 incompatibles entre deux versions.
 
+## Licence
+
+PunkOS est distribué sous la licence [GNU General Public License version 3](LICENSE).
+Cette licence garantit que le code et ses versions dérivées restent libres et
+que leurs sources demeurent accessibles selon les conditions de la GPLv3.
