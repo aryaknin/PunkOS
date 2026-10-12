@@ -31,3 +31,28 @@ d’amorçage et son contrat avec le noyau.
 Créer le dépôt officiel, inventorier l’environnement de développement puis choisir
 et vérifier la chaîne de compilation avant d’écrire le premier code du noyau.
 
+## 2026-10-13 — Préparation de l’environnement
+
+### Outils installés et vérifiés
+
+- QEMU pour exécuter la machine virtuelle x86-64 ;
+- xorriso pour construire les futures images ISO ;
+- NASM pour les portions écrites en assembleur ;
+- Clang et LLD pour compiler et lier le noyau ;
+- GDB pour le futur débogage ;
+- mtools pour manipuler les futures images FAT.
+
+Un test a produit avec succès un objet ELF 64 bits x86-64 pour la cible
+`x86_64-unknown-none-elf` en mode freestanding.
+
+### Décision sur la chaîne initiale
+
+Clang/LLD est retenu pour commencer. Clang sait viser directement une cible sans
+système d’exploitation, ce qui permet de ne pas confondre les bibliothèques de
+l’hôte Ubuntu avec les fonctionnalités disponibles dans PunkOS. La construction
+d’un GCC croisé pourra être étudiée plus tard sans bloquer le premier démarrage.
+
+### Prochaine étape
+
+Comprendre le passage d’un fichier source C à un objet, puis à un noyau ELF, et
+préparer l’intégration reproductible d’une version déterminée de Limine.

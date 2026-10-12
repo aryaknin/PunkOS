@@ -56,9 +56,18 @@ couche de démarrage devra convertir les informations reçues en structures prop
 
 Le détail précis de ce contrat sera écrit avant d’implémenter le bootloader.
 
+## Chaîne de compilation initiale
+
+Le noyau sera initialement compilé avec Clang pour la cible
+`x86_64-unknown-none-elf` et lié avec LLD. Ce choix permet de produire du code
+freestanding sans dépendre des bibliothèques de la machine Ubuntu hôte. NASM est
+disponible pour les portions qui nécessiteront explicitement de l’assembleur.
+
+Ce choix décrit l’outil initial, pas une dépendance de l’architecture du noyau :
+le code devra éviter autant que possible les extensions propres à un compilateur.
+
 ## Questions ouvertes
 
-- compilateur croisé GCC ou Clang/LLVM ;
 - format exact du noyau et modèle de chargement ;
 - framebuffer, console texte ou combinaison des deux ;
 - stratégie de gestion des interruptions matérielles ;
@@ -82,4 +91,3 @@ bibliothèque standard de la machine hôte.
 Limine constitue une dépendance de démarrage temporaire et explicite. Son retrait
 est planifié, contrairement aux outils de construction tels que le compilateur,
 Make, QEMU ou GDB, qui restent des outils utilisés sur la machine de développement.
-
