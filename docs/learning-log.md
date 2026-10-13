@@ -56,3 +56,60 @@ d’un GCC croisé pourra être étudiée plus tard sans bloquer le premier dém
 
 Comprendre le passage d’un fichier source C à un objet, puis à un noyau ELF, et
 préparer l’intégration reproductible d’une version déterminée de Limine.
+
+## 2026-10-13 — Première chaîne noyau complète jusqu’à ELF
+
+### Compilation séparée
+
+Le premier `kernel.c` a défini `kernel_main` et une boucle infinie. Une première
+inspection avec `file`, `readelf` et `nm` a montré qu’un fichier source non
+enregistré peut produire un objet vide : `.text` avait une taille nulle et aucun
+symbole `kernel_main` n’existait. Après enregistrement et recompilation, le symbole
+est apparu avec le type `T`.
+
+Un second fichier `math.c` a servi à étudier la compilation séparée. `kernel.o`
+contenait une référence `U add`, tandis que `math.o` fournissait `T add`. Les
+fonctions `sub`, `mult` et `divide` ont ensuite été ajoutées par le développeur.
+
+### Prototypes et headers
+
+Un appel placé avant la déclaration de `add` a été refusé par Clang. Une tentative
+d’initialisation globale avec `add(2, 3)` a également été refusée, car une variable
+globale exigeait ici une valeur calculable à la compilation. L’appel a été replacé
+dans `kernel_main` et précédé de son contrat.
+
+Le contrat a ensuite été déplacé vers `include/punkos/math.h`, protégé contre les
+inclusions multiples et partagé par `kernel.c` et `math.c`. Le renommage incomplet
+de `div` vers `divide` a démontré que déclaration, appel et définition doivent
+rester cohérents.
+
+### Liaison et organisation mémoire
+
+LLD a d’abord relié les objets pour résoudre leurs symboles. Un script de liaison
+a ensuite été écrit pour sélectionner ELF64 x86-64, désigner `kernel_main`,
+placer le noyau dans la moitié haute et séparer les permissions de ses segments.
+
+Le processus manuel a aussi montré la différence entre reconstruire un objet et
+reconstruire le noyau final : un `kernel.elf` antérieur ne contient pas les
+modifications d’un `kernel.o` plus récent tant que le linker n’est pas relancé.
+
+### Protocole Limine et framebuffer
+
+Le dépôt officiel `limine-protocol` a été intégré comme sous-module. Le noyau
+contient désormais les marqueurs de début et de fin des requêtes, demande la
+révision de base 6 et émet une requête framebuffer.
+
+Le point d’entrée vérifie la réponse, sélectionne le premier framebuffer RGB de
+32 bits, calcule chaque position avec le `pitch` et prévoit de remplir l’écran en
+magenta. `<stddef.h>` a été ajouté explicitement pour obtenir la macro `NULL` et
+`<stdint.h>` pour les types entiers à largeur déterminée.
+
+### État de fin de session
+
+La compilation et la liaison réussissent avec les avertissements transformés en
+erreurs. `kernel.elf` ne possède aucun symbole non résolu et expose deux segments
+non vides : requêtes Limine en lecture/écriture et code en lecture/exécution.
+
+Le noyau n’a pas encore été placé dans une image amorçable ni exécuté. Le prochain
+objectif est d’intégrer une version binaire de Limine, écrire sa configuration,
+construire l’image et observer le framebuffer magenta dans QEMU.

@@ -31,6 +31,10 @@ de son exécution.
 - écrire un message sur la console série ou dans le framebuffer ;
 - arrêter proprement le processeur lorsque le noyau n’a plus rien à exécuter.
 
+État au 13 octobre 2026 : le noyau ELF, son point d’entrée, son organisation
+mémoire et sa requête framebuffer sont implémentés et vérifiés statiquement.
+L’image amorçable, le lancement QEMU et la preuve visuelle restent à réaliser.
+
 Critère de sortie : QEMU démarre de manière reproductible et affiche un message
 provenant du code de PunkOS.
 
@@ -136,4 +140,3 @@ programme de test connu. Le bootloader reste un livrable officiel de PunkOS.
 Selon nos intérêts : réseau, USB, audio, interface graphique, multiprocesseur,
 permissions, compatibilité POSIX partielle ou portage vers une autre architecture.
 Ces sujets ne font pas encore partie des engagements du projet.
-

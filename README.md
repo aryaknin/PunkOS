@@ -8,9 +8,10 @@ d’un ordinateur à bas niveau et apprendre le C système en construisant chaqu
 brique progressivement. Le code du noyau ne sera pas traité comme une boîte
 noire : chaque module devra être compris, conçu, écrit et testé étape par étape.
 
-> **État du projet : conception initiale.** Aucun noyau fonctionnel n’est encore
-> implémenté. Les choix consignés ici pourront évoluer à mesure de notre
-> apprentissage.
+> **État du projet : premier noyau ELF construit, amorçage pas encore testé.**
+> PunkOS possède un point d’entrée C, un script de liaison, une interface C entre
+> modules et une requête framebuffer conforme au protocole Limine. La prochaine
+> étape consiste à créer l’image amorçable et à la démarrer dans QEMU.
 
 ## Vision
 
@@ -86,7 +87,10 @@ charge seront fixés pendant le premier jalon technique.
 ## Documentation
 
 - [Feuille de route](docs/roadmap.md)
+- [État exact du projet](docs/current-status.md)
 - [Architecture initiale](docs/architecture.md)
+- [De la source C au noyau ELF](docs/build-pipeline.md)
+- [Démarrage et protocole Limine](docs/boot-and-limine.md)
 - [Environnement et méthode de développement](docs/development.md)
 - [Journal d’apprentissage](docs/learning-log.md)
 
@@ -95,9 +99,10 @@ correspondant doit être mis à jour dans le même commit.
 
 ## Construction et exécution
 
-PunkOS ne contient pas encore de code exécutable. Les commandes de construction
-et de lancement seront ajoutées lors du premier jalon : démarrer un noyau minimal
-avec Limine dans QEMU.
+Le noyau est actuellement construit manuellement afin de rendre visibles les
+étapes de compilation et de liaison. Il n’existe pas encore de commande unique
+ni d’image amorçable. Les commandes vérifiées sont consignées dans le document
+[De la source C au noyau ELF](docs/build-pipeline.md).
 
 ## Avertissement
 

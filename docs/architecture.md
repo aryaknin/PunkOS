@@ -13,6 +13,9 @@ sera enrichi à mesure que les composants existeront.
 - QEMU sera la plateforme de développement principale.
 - Les tests sur matériel réel n’arriveront qu’après stabilisation en émulation.
 - La CLI initiale sera intégrée au noyau, puis remplacée par un shell utilisateur.
+- Le noyau ELF x86-64 est lié dans la moitié haute à partir de
+  `0xffffffff80000000`.
+- La révision de base 6 du protocole Limine est demandée pour le premier démarrage.
 
 ## Vue logique cible
 
@@ -55,6 +58,12 @@ couche de démarrage devra convertir les informations reçues en structures prop
 - transférer le contrôle au point d’entrée du noyau.
 
 Le détail précis de ce contrat sera écrit avant d’implémenter le bootloader.
+
+L’intégration actuelle de Limine constitue le premier exemple concret de ce
+contrat. Le noyau émet une requête framebuffer et attend en retour une description
+de la mémoire vidéo. Le futur bootloader PunkOS devra fournir une abstraction
+équivalente ou une couche d’adaptation devra convertir son propre protocole vers
+les structures internes du noyau.
 
 ## Chaîne de compilation initiale
 

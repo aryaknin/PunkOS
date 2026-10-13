@@ -1,0 +1,3 @@
+[submodule "vendor/limine-protocol"]
+	path = vendor/limine-protocol
+	url = https://github.com/Limine-Bootloader/limine-protocol.git

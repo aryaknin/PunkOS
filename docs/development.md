@@ -115,5 +115,18 @@ Avant le premier fichier C, nous avons vérifié :
 - la production d’un objet freestanding x86-64 ;
 - les versions de QEMU, GDB, NASM, xorriso et mtools.
 
-Il reste à épingler une version de Limine et à automatiser sa récupération dans
-le processus de construction.
+Le protocole Limine est désormais épinglé comme sous-module Git. Il reste à
+épingler les binaires du bootloader et à automatiser leur récupération dans le
+processus de construction.
+
+Pour récupérer le projet avec ses dépendances après un clonage :
+
+```sh
+git clone --recurse-submodules <URL_DU_DEPOT>
+```
+
+Pour initialiser les sous-modules dans un clone déjà existant :
+
+```sh
+git submodule update --init --recursive
+```
